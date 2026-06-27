@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body id="body" style="text-align:center; padding-top:100px; font-family:sans-serif; background-color:green;">
+    <h1 id="status">System Status: Clear</h1>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+        // Replace the URL below with YOUR Firebase Database URL
+        const app = initializeApp({ databaseURL: "https://logiclane-cbda5-default-rtdb.asia-southeast1.firebasedatabase.app/" });
+        const db = getDatabase(app);
+        
+        onValue(ref(db, 'alerts/status'), (snapshot) => {
+            const status = snapshot.val();
+            const body = document.getElementById("body");
+            const text = document.getElementById("status");
+            
+            if (status === "DANGER") {
+                body.style.backgroundColor = "red";
+                text.innerText = "WARNING: OBSTACLE DETECTED!";
+            } else {
+                body.style.backgroundColor = "green";
+                text.innerText = "System Status: Clear";
+            }
+        });
+    </script>
+</body>
+</html>
